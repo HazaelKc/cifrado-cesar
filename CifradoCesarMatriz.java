@@ -52,6 +52,12 @@ public class CifradoCesarMatriz {
         return r;
     }
 
+    public static void fuerzaBruta(String texto){
+        for(int d=0; d<alfabeto.length; d++){
+            System.out.println("k=" + d + " -> " + descifrar(texto,d));
+        }
+    }
+
     public static void main(String[] args){
 
         Scanner sc = new Scanner(System.in);
@@ -61,15 +67,21 @@ public class CifradoCesarMatriz {
 
             System.out.println("\n1. Cifrar");
             System.out.println("2. Descifrar");
-            System.out.println("3. Salir");
+            System.out.println("3. Fuerza bruta");
+            System.out.println("4. Salir");
             System.out.print("Opcion: ");
             int op = sc.nextInt();
             sc.nextLine();
 
-            if(op==3) break;
+            if(op==4) break;
 
             System.out.print("Mensaje: ");
             String msg = sc.nextLine().toLowerCase();
+
+            if(op==3){
+                fuerzaBruta(msg);
+                continue;
+            }
 
             System.out.print("Desplazamiento: ");
             int d = sc.nextInt();
