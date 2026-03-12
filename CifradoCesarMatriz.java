@@ -1,96 +1,66 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class CifradoCesarMatriz {
 
-    static char[][] matriz = {
-            {'a','b','c','d'},
-            {'e','f','g','h'},
-            {'i','j','k','l'},
-            {'m','n','o','p'},
-            {'q','r','s','t'},
-            {'u','v','w','x'},
-            {'y','z',' ',' '}
-    };
+static char[][] m={
+{'a','b','c','d'},
+{'e','f','g','h'},
+{'i','j','k','l'},
+{'m','n','o','p'},
+{'q','r','s','t'},
+{'u','v','w','x'},
+{'y','z',' '}
+};
 
-    static char[] alfabeto = new char[28];
+static String a="";
 
-    public static void construirAlfabeto(){
-        int k = 0;
-        for(int i=0;i<matriz.length;i++)
-            for(int j=0;j<matriz[i].length;j++)
-                alfabeto[k++] = matriz[i][j];
-    }
+static void construir(){
+for(char[] f:m) for(char c:f) a+=c;
+}
 
-    public static int buscarIndice(char c){
-        for(int i=0;i<alfabeto.length;i++)
-            if(alfabeto[i]==c)
-                return i;
-        return -1;
-    }
+static String cifrar(String t,int d){
+d%=a.length();
+String r="";
+for(char c:t.toCharArray()){
+int i=a.indexOf(c);
+r+= i>=0 ? a.charAt((i+d)%a.length()) : c;
+}
+return r;
+}
 
-    public static String cifrar(String texto,int d){
-        String r="";
-        for(char c: texto.toCharArray()){
-            int i = buscarIndice(c);
-            if(i!=-1)
-                r += alfabeto[(i+d)%alfabeto.length];
-            else
-                r += c;
-        }
-        return r;
-    }
+static String descifrar(String t,int d){
+d%=a.length();
+String r="";
+for(char c:t.toCharArray()){
+int i=a.indexOf(c);
+r+= i>=0 ? a.charAt((i-d+a.length())%a.length()) : c;
+}
+return r;
+}
 
-    public static String descifrar(String texto,int d){
-        String r="";
-        for(char c: texto.toCharArray()){
-            int i = buscarIndice(c);
-            if(i!=-1)
-                r += alfabeto[(i-d+alfabeto.length)%alfabeto.length];
-            else
-                r += c;
-        }
-        return r;
-    }
+static void fuerza(String t){
+for(int i=0;i<a.length();i++)
+System.out.println("k="+i+" -> "+descifrar(t,i));
+}
 
-    public static void fuerzaBruta(String texto){
-        for(int d=0; d<alfabeto.length; d++){
-            System.out.println("k=" + d + " -> " + descifrar(texto,d));
-        }
-    }
+public static void main(String[] args){
+Scanner s=new Scanner(System.in);
+construir();
 
-    public static void main(String[] args){
+while(true){
+System.out.println("\n1 Cifrar\n2 Descifrar\n3 Fuerza\n4 Salir");
+int op=s.nextInt(); s.nextLine();
+if(op==4) break;
 
-        Scanner sc = new Scanner(System.in);
-        construirAlfabeto();
+System.out.print("Mensaje: ");
+String t=s.nextLine().toLowerCase();
 
-        while(true){
+if(op==3){fuerza(t); continue;}
 
-            System.out.println("\n1. Cifrar");
-            System.out.println("2. Descifrar");
-            System.out.println("3. Fuerza bruta");
-            System.out.println("4. Salir");
-            System.out.print("Opcion: ");
-            int op = sc.nextInt();
-            sc.nextLine();
+System.out.print("Desplazamiento: ");
+int d=s.nextInt(); s.nextLine();
 
-            if(op==4) break;
-
-            System.out.print("Mensaje: ");
-            String msg = sc.nextLine().toLowerCase();
-
-            if(op==3){
-                fuerzaBruta(msg);
-                continue;
-            }
-
-            System.out.print("Desplazamiento: ");
-            int d = sc.nextInt();
-            sc.nextLine();
-
-            if(op==1)
-                System.out.println("Cifrado: " + cifrar(msg,d));
-            else if(op==2)
-                System.out.println("Descifrado: " + descifrar(msg,d));
-        }
-    }
+System.out.println(op==1?cifrar(t,d):descifrar(t,d));
+}
+}
 }
